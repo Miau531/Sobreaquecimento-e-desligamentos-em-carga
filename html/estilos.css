@@ -1,0 +1,431 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #e74c3c;
+    --primary-dark: #c0392b;
+    --secondary-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --light-bg: #ecf0f1;
+    --dark-text: #2c3e50;
+    --border-color: #bdc3c7;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-text);
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header .subtitle {
+    font-size: 1.1em;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
+/* ===== SECTIONS GERAIS ===== */
+section {
+    background: white;
+    margin-bottom: 30px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--primary-color);
+}
+
+section h2 {
+    font-size: 2em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.section-icon {
+    font-size: 2.5em;
+    flex-shrink: 0;
+}
+
+.section-desc {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* ===== MISSÃO ===== */
+.missao {
+    background: linear-gradient(to right, rgba(52, 152, 219, 0.05), white);
+    border-left-color: var(--secondary-color);
+}
+
+.missao p {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.8;
+}
+
+/* ===== CHECKLIST ===== */
+.checklist {
+    border-left-color: var(--success-color);
+}
+
+.checklist-items {
+    display: grid;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.checklist-item:hover {
+    background-color: #e8f4f8;
+    border-color: var(--secondary-color);
+    transform: translateX(5px);
+}
+
+.checklist-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+    cursor: pointer;
+    accent-color: var(--success-color);
+}
+
+.checklist-item label {
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+/* ===== AVARIAS ===== */
+.avarias {
+    border-left-color: var(--warning-color);
+}
+
+.avarias h2 {
+    color: var(--warning-color);
+}
+
+.avaria-card {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.05) 0%, rgba(231, 76, 60, 0.05) 100%);
+    border: 2px solid var(--border-color);
+    border-left: 5px solid var(--warning-color);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.avaria-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    border-left-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.avaria-numero {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background: var(--warning-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.3em;
+    box-shadow: var(--shadow);
+}
+
+.avaria-card h3 {
+    color: var(--dark-text);
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.avaria-content p {
+    margin-bottom: 12px;
+    line-height: 1.7;
+}
+
+.avaria-content p strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.avaria-content ul {
+    margin-left: 25px;
+    margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 3px solid var(--secondary-color);
+}
+
+.avaria-content li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.avaria-content li strong {
+    color: var(--dark-text);
+}
+
+/* ===== BOAS PRÁTICAS ===== */
+.boas-praticas {
+    border-left-color: #27ae60;
+}
+
+.boas-praticas h2 {
+    color: #27ae60;
+}
+
+.pratica-card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.pratica-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 600;
+}
+
+.pratica-card:first-of-type h3 {
+    color: var(--success-color);
+    border-bottom-color: var(--success-color);
+}
+
+.pratica-card:last-of-type h3 {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.pratica-lista {
+    margin-left: 25px;
+    list-style-position: inside;
+}
+
+.pratica-lista li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    padding-left: 10px;
+}
+
+.pratica-lista.fazer li {
+    color: #27ae60;
+}
+
+.pratica-lista.fazer li::marker {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.pratica-lista.evitar li {
+    color: #c0392b;
+}
+
+.pratica-lista.evitar li::marker {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* ===== RESUMO ===== */
+.resumo {
+    border-left-color: var(--secondary-color);
+    background: linear-gradient(to right, rgba(52, 152, 219, 0.05), white);
+}
+
+.resumo h2 {
+    color: var(--secondary-color);
+}
+
+.resumo-box {
+    background: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: 8px;
+    padding: 25px;
+    margin-top: 20px;
+}
+
+.resumo-box p {
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 15px;
+    font-size: 1.05em;
+}
+
+.resumo-box ol {
+    margin-left: 25px;
+}
+
+.resumo-box li {
+    margin-bottom: 12px;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    padding: 30px;
+    background: var(--dark-text);
+    color: white;
+    border-radius: 10px;
+    margin-top: 40px;
+    font-weight: 500;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .header {
+        padding: 40px 25px;
+    }
+
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .header .subtitle {
+        font-size: 1em;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    section {
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    section h2 {
+        font-size: 1.5em;
+        flex-direction: column;
+    }
+
+    .section-icon {
+        font-size: 2em;
+    }
+
+    .avaria-numero {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1em;
+        left: 15px;
+    }
+
+    .avaria-card h3 {
+        font-size: 1.1em;
+        margin-top: 20px;
+    }
+
+    .footer {
+        margin-top: 30px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .header .subtitle {
+        font-size: 0.9em;
+    }
+
+    section h2 {
+        font-size: 1.3em;
+    }
+
+    .avaria-card {
+        padding: 20px;
+    }
+
+    .avaria-numero {
+        width: 32px;
+        height: 32px;
+        font-size: 1em;
+        top: -12px;
+    }
+
+    .pratica-lista {
+        margin-left: 20px;
+    }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section {
+    animation: slideIn 0.6s ease-out;
+}
+
+.avaria-card {
+    animation: slideIn 0.6s ease-out;
+}
