@@ -1,3 +1,7 @@
+/* ========================================
+   ESTILOS GERAIS
+   ======================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,337 +10,323 @@
 
 :root {
     --primary-color: #e74c3c;
-    --primary-dark: #c0392b;
-    --secondary-color: #3498db;
+    --secondary-color: #c0392b;
+    --accent-color: #f39c12;
     --success-color: #27ae60;
-    --warning-color: #f39c12;
-    --light-bg: #ecf0f1;
-    --dark-text: #2c3e50;
+    --danger-color: #e67e22;
+    --text-dark: #2c3e50;
+    --text-light: #7f8c8d;
+    --bg-light: #ecf0f1;
+    --bg-white: #ffffff;
     --border-color: #bdc3c7;
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 20px;
     line-height: 1.6;
-    color: var(--dark-text);
-    background-color: #f8f9fa;
 }
+
+/* ========================================
+   CONTAINER PRINCIPAL
+   ======================================== */
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 20px;
+    background: var(--bg-white);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
 }
 
-/* ===== HEADER ===== */
+/* ========================================
+   CABEÇALHO
+   ======================================== */
+
 .header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    padding: 60px 40px;
-    border-radius: 10px;
-    margin-bottom: 40px;
-    box-shadow: var(--shadow);
+    padding: 50px 30px;
     text-align: center;
+    border-bottom: 5px solid var(--accent-color);
 }
 
 .header h1 {
     font-size: 2.5em;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .header .subtitle {
     font-size: 1.1em;
     opacity: 0.95;
     font-weight: 300;
-}
-
-/* ===== SECTIONS GERAIS ===== */
-section {
-    background: white;
-    margin-bottom: 30px;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    border-left: 5px solid var(--primary-color);
-}
-
-section h2 {
-    font-size: 2em;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.section-icon {
-    font-size: 2.5em;
-    flex-shrink: 0;
-}
-
-.section-desc {
-    font-size: 1.1em;
-    color: #555;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
-/* ===== MISSÃO ===== */
-.missao {
-    background: linear-gradient(to right, rgba(52, 152, 219, 0.05), white);
-    border-left-color: var(--secondary-color);
-}
-
-.missao p {
-    font-size: 1.1em;
-    font-weight: 500;
-    color: #333;
     line-height: 1.8;
 }
 
-/* ===== CHECKLIST ===== */
+/* ========================================
+   SECÇÕES GERAIS
+   ======================================== */
+
+section {
+    padding: 40px 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+section:last-child {
+    border-bottom: none;
+}
+
+section h2 {
+    color: var(--primary-color);
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+section h3 {
+    color: var(--text-dark);
+    margin-top: 20px;
+    font-size: 1.1em;
+}
+
+/* ========================================
+   MISSÃO
+   ======================================== */
+
+.mission {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.05) 0%, rgba(231, 76, 60, 0.05) 100%);
+}
+
+.mission p {
+    font-size: 1.05em;
+    color: var(--text-dark);
+    line-height: 1.8;
+    padding: 20px;
+    background: var(--bg-white);
+    border-left: 5px solid var(--accent-color);
+    border-radius: 5px;
+}
+
+/* ========================================
+   CHECKLIST
+   ======================================== */
+
 .checklist {
-    border-left-color: var(--success-color);
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.03) 0%, rgba(52, 152, 219, 0.03) 100%);
+}
+
+.section-intro {
+    font-size: 1.05em;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    font-weight: 500;
 }
 
 .checklist-items {
+    list-style: none;
     display: grid;
+    grid-template-columns: 1fr;
     gap: 15px;
-    margin-top: 25px;
 }
 
-.checklist-item {
+.checklist-items li {
     display: flex;
     align-items: center;
-    padding: 12px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
+    padding: 15px 20px;
+    background: var(--bg-white);
+    border-left: 4px solid var(--success-color);
+    border-radius: 5px;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.checklist-item:hover {
-    background-color: #e8f4f8;
-    border-color: var(--secondary-color);
+.checklist-items li:hover {
     transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
 }
 
-.checklist-item input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 15px;
-    cursor: pointer;
-    accent-color: var(--success-color);
-}
-
-.checklist-item label {
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    color: #333;
-    margin: 0;
-}
-
-/* ===== AVARIAS ===== */
-.avarias {
-    border-left-color: var(--warning-color);
-}
-
-.avarias h2 {
-    color: var(--warning-color);
-}
-
-.avaria-card {
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.05) 0%, rgba(231, 76, 60, 0.05) 100%);
-    border: 2px solid var(--border-color);
-    border-left: 5px solid var(--warning-color);
-    border-radius: 10px;
-    padding: 25px;
-    margin-bottom: 25px;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.avaria-card:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-    border-left-color: var(--primary-color);
-    transform: translateY(-2px);
-}
-
-.avaria-numero {
-    position: absolute;
-    top: -15px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    background: var(--warning-color);
+.check-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--success-color);
     color: white;
     border-radius: 50%;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   PROBLEMAS/AVARIAS
+   ======================================== */
+
+.problems {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.02) 0%, rgba(243, 156, 18, 0.02) 100%);
+}
+
+.problem-card {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+    background: var(--bg-white);
+    border-left: 5px solid var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.problem-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-left-color: var(--secondary-color);
+}
+
+.problem-number {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-radius: 50%;
     font-weight: 700;
-    font-size: 1.3em;
-    box-shadow: var(--shadow);
+    font-size: 1.5em;
+    grid-row: 1 / 4;
 }
 
-.avaria-card h3 {
-    color: var(--dark-text);
-    font-size: 1.3em;
-    margin-bottom: 15px;
-    margin-top: 15px;
-    font-weight: 600;
-}
-
-.avaria-content p {
-    margin-bottom: 12px;
-    line-height: 1.7;
-}
-
-.avaria-content p strong {
+.problem-card h3 {
+    margin: 0;
     color: var(--primary-color);
-    font-weight: 600;
+    font-size: 1.15em;
 }
 
-.avaria-content ul {
-    margin-left: 25px;
-    margin-bottom: 15px;
-    background-color: rgba(255, 255, 255, 0.6);
-    padding: 15px 20px;
-    border-radius: 8px;
-    border-left: 3px solid var(--secondary-color);
+.problem-card p {
+    margin: 10px 0 0 0;
+    color: var(--text-light);
+    font-size: 0.95em;
 }
 
-.avaria-content li {
-    margin-bottom: 10px;
-    line-height: 1.6;
-    color: #333;
-}
-
-.avaria-content li strong {
-    color: var(--dark-text);
-}
-
-/* ===== BOAS PRÁTICAS ===== */
-.boas-praticas {
-    border-left-color: #27ae60;
-}
-
-.boas-praticas h2 {
-    color: #27ae60;
-}
-
-.pratica-card {
-    background: white;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-}
-
-.pratica-card h3 {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--border-color);
-    font-weight: 600;
-}
-
-.pratica-card:first-of-type h3 {
-    color: var(--success-color);
-    border-bottom-color: var(--success-color);
-}
-
-.pratica-card:last-of-type h3 {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-}
-
-.pratica-lista {
-    margin-left: 25px;
-    list-style-position: inside;
-}
-
-.pratica-lista li {
-    margin-bottom: 10px;
-    line-height: 1.6;
-    padding-left: 10px;
-}
-
-.pratica-lista.fazer li {
-    color: #27ae60;
-}
-
-.pratica-lista.fazer li::marker {
-    color: var(--success-color);
-    font-weight: bold;
-}
-
-.pratica-lista.evitar li {
-    color: #c0392b;
-}
-
-.pratica-lista.evitar li::marker {
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-/* ===== RESUMO ===== */
-.resumo {
-    border-left-color: var(--secondary-color);
-    background: linear-gradient(to right, rgba(52, 152, 219, 0.05), white);
-}
-
-.resumo h2 {
+.problem-card strong {
     color: var(--secondary-color);
+    display: block;
+    margin-top: 10px;
 }
 
-.resumo-box {
-    background: white;
-    border: 2px solid var(--secondary-color);
-    border-radius: 8px;
+/* ========================================
+   BOAS PRÁTICAS
+   ======================================== */
+
+.best-practices {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.03) 0%, rgba(243, 156, 18, 0.03) 100%);
+}
+
+.practice {
     padding: 25px;
+    margin-bottom: 20px;
+    background: var(--bg-white);
+    border-radius: 8px;
+    border-left: 5px solid var(--success-color);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.practice.warning {
+    border-left-color: var(--danger-color);
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.03) 0%, rgba(231, 76, 60, 0.03) 100%);
+}
+
+.practice h3 {
+    margin-top: 0;
+    font-size: 1.15em;
+}
+
+.practice.warning h3 {
+    color: var(--danger-color);
+}
+
+.practice ul {
+    list-style: none;
+    margin-top: 15px;
+}
+
+.practice li {
+    padding: 10px 0;
+    padding-left: 30px;
+    position: relative;
+    color: var(--text-dark);
+    font-size: 0.95em;
+}
+
+.practice li:before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--success-color);
+    font-size: 1.5em;
+    line-height: 1;
+}
+
+.practice.warning li:before {
+    content: "✕";
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* ========================================
+   RESUMO
+   ======================================== */
+
+.summary {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(155, 89, 182, 0.05) 100%);
+}
+
+.summary ol {
+    list-style: decimal inside;
     margin-top: 20px;
 }
 
-.resumo-box p {
-    font-weight: 600;
-    color: var(--dark-text);
-    margin-bottom: 15px;
-    font-size: 1.05em;
-}
-
-.resumo-box ol {
-    margin-left: 25px;
-}
-
-.resumo-box li {
+.summary li {
+    padding: 12px 20px;
     margin-bottom: 12px;
-    line-height: 1.7;
-    color: #333;
+    background: var(--bg-white);
+    border-radius: 5px;
+    border-left: 4px solid #3498db;
+    color: var(--text-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
-/* ===== FOOTER ===== */
-.footer {
-    text-align: center;
-    padding: 30px;
-    background: var(--dark-text);
-    color: white;
-    border-radius: 10px;
-    margin-top: 40px;
-    font-weight: 500;
+.summary li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
 }
 
-/* ===== RESPONSIVE ===== */
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
 @media (max-width: 768px) {
-    .header {
-        padding: 40px 25px;
-    }
-
     .header h1 {
         font-size: 1.8em;
     }
@@ -345,76 +335,102 @@ section h2 {
         font-size: 1em;
     }
 
-    .container {
-        padding: 15px;
-    }
-
     section {
-        padding: 25px;
-        margin-bottom: 20px;
+        padding: 30px 20px;
     }
 
     section h2 {
         font-size: 1.5em;
-        flex-direction: column;
     }
 
-    .section-icon {
-        font-size: 2em;
-    }
-
-    .avaria-numero {
-        width: 35px;
-        height: 35px;
-        font-size: 1.1em;
-        left: 15px;
-    }
-
-    .avaria-card h3 {
-        font-size: 1.1em;
-        margin-top: 20px;
-    }
-
-    .footer {
-        margin-top: 30px;
+    .problem-card {
+        grid-template-columns: 50px 1fr;
+        gap: 15px;
         padding: 20px;
+    }
+
+    .problem-number {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3em;
+    }
+
+    .problem-card h3 {
+        font-size: 1.05em;
+    }
+
+    .practice {
+        padding: 20px;
+    }
+
+    .practice li {
+        padding-left: 25px;
+        font-size: 0.9em;
+    }
+
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        border-radius: 10px;
     }
 }
 
 @media (max-width: 480px) {
+    .header {
+        padding: 30px 15px;
+    }
+
     .header h1 {
         font-size: 1.5em;
+        margin-bottom: 10px;
     }
 
     .header .subtitle {
         font-size: 0.9em;
     }
 
+    section {
+        padding: 20px 15px;
+    }
+
     section h2 {
         font-size: 1.3em;
     }
 
-    .avaria-card {
-        padding: 20px;
+    .problem-card {
+        grid-template-columns: 45px 1fr;
+        gap: 12px;
+        padding: 15px;
     }
 
-    .avaria-numero {
-        width: 32px;
-        height: 32px;
-        font-size: 1em;
-        top: -12px;
+    .problem-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1em;
     }
 
-    .pratica-lista {
-        margin-left: 20px;
+    .checklist-items li {
+        padding: 12px 15px;
+    }
+
+    .check-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 12px;
+        font-size: 0.8em;
     }
 }
 
-/* ===== ANIMAÇÕES ===== */
-@keyframes slideIn {
+/* ========================================
+   ANIMAÇÕES
+   ======================================== */
+
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -423,9 +439,29 @@ section h2 {
 }
 
 section {
-    animation: slideIn 0.6s ease-out;
+    animation: fadeIn 0.6s ease-out;
 }
 
-.avaria-card {
-    animation: slideIn 0.6s ease-out;
+.problem-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.problem-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.problem-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.problem-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.problem-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.problem-card:nth-child(6) {
+    animation-delay: 0.6s;
 }

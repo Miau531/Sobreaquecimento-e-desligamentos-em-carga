@@ -1,11 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temperaturas altas: limpeza, pasta térmica e airflow</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <h1>Temperaturas altas: limpeza, pasta térmica e airflow</h1>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header class="header">
+            <h1>🌡️ Temperaturas altas: limpeza, pasta térmica e airflow</h1>
+            <p class="subtitle">Tutorial para situações em que o PC aquece muito, fica lento ou desliga quando se exige mais</p>
+        </header>
+
+        <!-- Missão -->
+        <section class="mission">
+            <h2>📋 Missão</h2>
+            <p>Criar um tutorial para situações em que o PC aquece muito, fica lento ou desliga quando se exige mais (jogos, render, testes).</p>
+        </section>
+
+        <!-- Checklist de Inspeção Visual -->
+        <section class="checklist">
+            <h2>🔍 Checklist de Inspeção Visual</h2>
+            <p class="section-intro">O que procurar sem desmontar tudo:</p>
+            <ul class="checklist-items">
+                <li><span class="check-icon">✓</span> Verifique se há pó acumulado no dissipador</li>
+                <li><span class="check-icon">✓</span> Observe as ventoinhas - estão a rodar?</li>
+                <li><span class="check-icon">✓</span> Verifique as conexões das ventoinhas no motherboard</li>
+                <li><span class="check-icon">✓</span> Inspeccione o fluxo de ar: entradas e saídas desbloqueadas</li>
+                <li><span class="check-icon">✓</span> Verifique se há cabos a bloquear o fluxo de ar</li>
+                <li><span class="check-icon">✓</span> Confirme se o PC está afastado das paredes</li>
+            </ul>
+        </section>
+
+        <!-- Avarias Obrigatórias -->
+        <section class="problems">
+            <h2>⚠️ Avarias e Situações Críticas</h2>
+            
+            <div class="problem-card">
+                <div class="problem-number">1</div>
+                <h3>Pó no dissipador / Ventoinhas bloqueadas</h3>
+                <p>A acumulação de pó reduz drasticamente a eficiência de arrefecimento. O pó bloqueia o fluxo de ar necessário para dissipar o calor.</p>
+                <strong>Solução:</strong> Limpeza regular do dissipador e ventoinhas.
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-number">2</div>
+                <h3>Ventoinha do CPU parada ou no conector errado</h3>
+                <p>Se a ventoinha principal não estiver a rodar, o CPU não consegue arrefecer. Ligações incorrectas podem causar alimentação insuficiente.</p>
+                <strong>Solução:</strong> Verificar conexões e testar funcionamento.
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-number">3</div>
+                <h3>Cooler mal fixo (contacto fraco com o CPU)</h3>
+                <p>Um cooler frouxo não faz contacto adequado com o CPU, impedindo a transferência de calor mesmo que esteja a funcionar.</p>
+                <strong>Solução:</strong> Reapertar a fixação e reaplicar pasta térmica.
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-number">4</div>
+                <h3>Pasta térmica insuficiente ou seca</h3>
+                <p>A pasta térmica é essencial para o contacto entre o cooler e o CPU. Insuficiente ou seca = péssima transferência térmica.</p>
+                <strong>Solução:</strong> Limpar e reaplicar pasta térmica de qualidade.
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-number">5</div>
+                <h3>Fluxo de ar mal orientado / Cabos a bloquear</h3>
+                <p>Entradas e saídas de ar bloqueadas criam bolsos quentes dentro do gabinete. Cabos soltos aumentam a resistência ao fluxo de ar.</p>
+                <strong>Solução:</strong> Reorganizar o interior do gabinete para melhorar a circulação.
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-number">6</div>
+                <h3>PC encostado a parede / Sem ventilação externa</h3>
+                <p>A proximidade com paredes e a falta de espaço para entrada de ar fresco compromete o arrefecimento global do sistema.</p>
+                <strong>Solução:</strong> Afastar o PC da parede e garantir espaço livre para circulação de ar.
+            </div>
+        </section>
+
+        <!-- Boas Práticas de Limpeza -->
+        <section class="best-practices">
+            <h2>✨ Boas Práticas de Limpeza</h2>
+            
+            <div class="practice">
+                <h3>✓ O que fazer:</h3>
+                <ul>
+                    <li>Use um aspirador com bocal fino e controlado</li>
+                    <li>Use pano macio ou escova antiestática</li>
+                    <li>Limpe com movimentos suaves e deliberados</li>
+                    <li>Trabalhe em ambiente com ar seco (sem humidade)</li>
+                    <li>Desligue o PC e deixe arrefecer antes de começar</li>
+                </ul>
+            </div>
+
+            <div class="practice warning">
+                <h3>✗ O que evitar:</h3>
+                <ul>
+                    <li><strong>NÃO</strong> use jatos de ar comprimido agressivos nas ventoinhas</li>
+                    <li><strong>NÃO</strong> toque nas ventoinhas enquanto se movem</li>
+                    <li><strong>NÃO</strong> use produtos químicos ou água</li>
+                    <li><strong>NÃO</strong> force nenhum componente durante a limpeza</li>
+                    <li><strong>NÃO</strong> trabalhe com o PC ligado</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Resumo -->
+        <section class="summary">
+            <h2>📌 Resumo das Ações</h2>
+            <ol>
+                <li>Inspecionar visualmente (sem desmontar)</li>
+                <li>Desligar o PC e deixar arrefecer</li>
+                <li>Limpar pó com cuidado (sem jatos agressivos)</li>
+                <li>Verificar todas as conexões</li>
+                <li>Reaplicar pasta térmica se necessário</li>
+                <li>Reorganizar cabos para melhor fluxo de ar</li>
+                <li>Garantir ventilação externa adequada</li>
+            </ol>
+        </section>
+    </div>
 </body>
 </html>
