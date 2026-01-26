@@ -30,7 +30,7 @@ html {
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-dark);
-    background-image: url(fundo.webp);
+    background-image: url('../imagens/fundo.webp');
     min-height: 100vh;
     padding: 20px;
     line-height: 1.6;
