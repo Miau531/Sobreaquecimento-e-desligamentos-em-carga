@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina Virtual - Reparação Interativa</title>
+    <style>
+        /* --- Configurações Globais e Variáveis --- */
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --primary-color: #21262d;
+            --accent-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --success-color: #3fb950;
+            --warning-color: #d29922;
+            --danger-color: #f85149;
+            --border-color: #30363d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            user-select: none; /* Evita seleção de texto durante interações */
+        }
+
+        /* --- Cabeçalho --- */
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { font-size: 2.5rem; color: var(--accent-color); }
+        .subtitle { font-size: 1.1rem; color: #8b949e; margin-top: 10px; }
+
+        /* --- Contentor Principal --- */
+        main { display: flex; flex-direction: column; align-items: center; gap: 20px; max-width: 900px; width: 100%; }
+
+        /* --- Secção da Cena do PC --- */
+        .scene-section {
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px;
+            padding: 20px; position: relative; width: 100%; height: 400px; overflow: hidden;
+        }
+        .environment { position: relative; width: 100%; height: 100%; }
+        .wall { position: absolute; top: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to bottom, #2c3e50, #34495e); border-bottom: 3px solid var(--border-color); }
+        .desk { position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: #8b6f47; border-top: 3px solid #6d5637; }
+        .pc-case {
+            position: absolute; bottom: 40%; left: 50%; transform: translateX(-50%);
+            width: 180px; height: 220px; background: #1e1e1e; border: 2px solid #444; border-radius: 5px;
+            transition: transform 0.1s linear; /* Transição mais rápida para o arrasto */
+            cursor: grab;
+        }
+        .pc-case.dragging { cursor: grabbing; }
+
+        /* Canvas para "limpar" o pó */
+        #dust-canvas {
+            position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 120px; z-index: 10;
+            pointer-events: none; /* Desativado por padrão */
+        }
+        #dust-canvas.active { pointer-events: all; cursor: crosshair; }
+
+        /* Drop Zones (para as ferramentas simples) */
+        .drop-zone {
+            position: absolute; border: 2px dashed transparent; border-radius: 5px; transition: all 0.3s ease;
+        }
+        .drop-zone.drag-over { border-color: var(--accent-color); background-color: rgba(88, 166, 255, 0.1); box-shadow: 0 0 15px rgba(88, 166, 255, 0.5); }
+        .drop-zone.solved { border-color: var(--success-color); background-color: rgba(63, 185, 80, 0.1); }
+
+        /* Componentes do PC (SVG) */
+        .pc-svg { width: 100%; height: 100%; }
+        .fan-blades { transform-origin: 50% 50%; }
+        .fan-blades.spinning { animation: spin 0.5s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .dust-layer { opacity: 0.7; transition: opacity 0.5s ease-out; }
+        .dust-layer.clean { opacity: 0; }
+        .cable-mess { stroke: #555; stroke-width: 4; fill: none; opacity: 1; transition: all 0.5s ease-out; }
+        .cable-mess.organized { opacity: 0.3; stroke: var(--success-color); stroke-width: 2; }
+        .cooler-screws { stroke: #ff0000; stroke-width: 2; opacity: 1; transition: stroke 0.5s ease-out; }
+        .cooler-screws.tight { stroke: #888; }
+        .thermal-paste-old { fill: #8b4513; opacity: 1; transition: opacity 0.5s ease-out; }
+        .thermal-paste-old.replaced { opacity: 0; }
+        .thermal-paste-new { fill: #c0c0c0; opacity: 0; transition: opacity 0.5s ease-in; }
+        .thermal-paste-new.applied { opacity: 1; }
+        
+        /* --- Secção de Controlo e Ferramentas --- */
+        .control-section { display: flex; gap: 20px; width: 100%; flex-wrap: wrap; justify-content: center; }
+        .status-panel, .toolbox-panel {
+            background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px;
+            padding: 20px; flex: 1; min-width: 280px;
+        }
+        .panel-title { font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .thermometer-container { display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .temperature-display { font-size: 3rem; font-weight: bold; transition: color 0.5s ease; }
+        .temp-high { color: var(--danger-color); }
+        .temp-medium { color: var(--warning-color); }
+        .temp-low { color: var(--success-color); }
+        .thermometer {
+            width: 30px; height: 120px; background: #333; border-radius: 15px; position: relative; border: 2px solid #555;
+        }
+        .mercury {
+            position: absolute; bottom: 5px; left: 5px; right: 5px; background: var(--danger-color); border-radius: 10px;
+            transition: height 0.8s ease, background-color 0.8s ease;
+        }
+        .toolbox { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; }
+        .tool {
+            font-size: 3rem; cursor: pointer; padding: 10px; border-radius: 8px; background-color: var(--primary-color);
+            border: 2px solid transparent; transition: all 0.2s;
+        }
+        .tool:hover { transform: scale(1.1); background-color: #2c313a; }
+        .tool.active { border-color: var(--accent-color); background-color: #1c3149; transform: scale(1.15); }
+        .tool.used { cursor: not-allowed; opacity: 0.3; filter: grayscale(100%); }
+        .tool.draggable { cursor: grab; }
+        .tool.dragging { cursor: grabbing; opacity: 0.5; }
+
+        .success-message {
+            margin-top: 20px; padding: 15px; background-color: var(--success-color); color: white;
+            border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;
+            opacity: 0; transform: translateY(-20px); transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .success-message.show { opacity: 1; transform: translateY(0); }
+        .reset-btn {
+            margin-top: 15px; width: 100%; padding: 12px; background-color: var(--accent-color); color: white;
+            border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer;
+            transition: background-color 0.3s ease; display: none;
+        }
+        .reset-btn.show { display: block; }
+        .reset-btn:hover { background-color: #4c94d8; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🛠️ Oficina Virtual de PCs</h1>
+        <p class="subtitle">Use as ferramentas de forma interativa para resolver as avarias.</p>
+    </header>
+
+    <main>
+        <section class="scene-section">
+            <div class="environment">
+                <div class="wall"></div>
+                <div class="desk"></div>
+                <div class="pc-case" id="pc-case">
+                    <svg class="pc-svg" viewBox="0 0 180 220" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="10" width="160" height="200" rx="3" fill="#2c2c2c" stroke="#555" stroke-width="1"/>
+                        <g id="fan-cooler-group">
+                            <rect x="35" y="40" width="110" height="110" fill="#555" />
+                            <circle cx="90" cy="95" r="45" fill="#777" stroke="#555" stroke-width="2"/>
+                            <g class="fan-blades" id="fan-blades"><path d="M90,95 L90,50 M90,95 L135,95 M90,95 L90,140 M90,95 L45,95" stroke="#aaa" stroke-width="4"/></g>
+                            <g class="cooler-screws" id="cooler-screws">
+                                <circle cx="55" cy="60" r="3" fill="none"/><circle cx="125" cy="60" r="3" fill="none"/>
+                                <circle cx="55" cy="130" r="3" fill="none"/><circle cx="125" cy="130" r="3" fill="none"/>
+                            </g>
+                        </g>
+                        <rect class="thermal-paste-old" id="thermal-paste-old" x="75" y="80" width="30" height="30" rx="5"/>
+                        <rect class="thermal-paste-new" id="thermal-paste-new" x="75" y="80" width="30" height="30" rx="5"/>
+                        <g class="cable-mess" id="cable-mess">
+                            <path d="M 10 170 Q 90 160 170 180" /><path d="M 10 180 Q 60 190 170 170" />
+                        </g>
+                        <g class="dust-layer" id="dust-layer">
+                            <rect x="40" y="45" width="100" height="100" fill="#8B7355" opacity="0.5" rx="5"/>
+                            <circle cx="90" cy="95" r="43" fill="#A0826D" opacity="0.6"/>
+                        </g>
+                    </svg>
+                </div>
+                <canvas id="dust-canvas" width="120" height="120"></canvas>
+                
+                <!-- Drop Zones para ferramentas de arrastar/largar -->
+                <div class="drop-zone" id="drop-fan" data-tool="plug" style="top: 100px; left: 50%; transform: translateX(-50%); width: 90px; height: 90px;"></div>
+                <div class="drop-zone" id="drop-cooler" data-tool="screwdriver" style="top: 80px; left: 50%; transform: translateX(-50%); width: 120px; height: 120px;"></div>
+                <div class="drop-zone" id="drop-paste" data-tool="paste" style="top: 100px; left: 50%; transform: translateX(-50%); width: 50px; height: 50px;"></div>
+                <div class="drop-zone" id="drop-airflow" data-tool="cable-tie" style="bottom: 80px; left: 50%; transform: translateX(-50%); width: 160px; height: 50px;"></div>
+            </div>
+        </section>
+
+        <section class="control-section">
+            <div class="status-panel">
+                <h2 class="panel-title">🌡️ Status do Sistema</h2>
+                <div class="thermometer-container">
+                    <div class="temperature-display temp-high" id="temp-display">98°C</div>
+                    <div class="thermometer"><div class="mercury" id="mercury"></div></div>
+                </div>
+            </div>
+
+            <div class="toolbox-panel">
+                <h2 class="panel-title">🧰 Caixa de Ferramentas</h2>
+                <div class="toolbox">
+                    <div class="tool" data-tool="brush" title="Clique para ativar e esfregar no pó">🧹</div>
+                    <div class="tool draggable" draggable="true" data-tool="plug" title="Arrastar ou clicar para usar">🔌</div>
+                    <div class="tool draggable" draggable="true" data-tool="screwdriver" title="Arrastar ou clicar para usar">🔧</div>
+                    <div class="tool draggable" draggable="true" data-tool="paste" title="Arrastar ou clicar para usar">🧪</div>
+                    <div class="tool draggable" draggable="true" data-tool="cable-tie" title="Arrastar ou clicar para usar">🪢</div>
+                    <div class="tool" data-tool="push" title="Clique para ativar e arrastar o PC">✋</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="success-message" id="success-message">✅ Excelente! Todas as avarias foram resolvidas. O PC está estável e seguro.</div>
+        <button class="reset-btn" id="btn-reset">🔄 Reiniciar Diagnóstico</button>
+    </main>
+
+    <script>
+        // --- Estado da Aplicação ---
+        const state = {
+            temperature: 98,
+            problems: { dust: true, fan: true, cooler: true, paste: true, airflow: true, position: true },
+            isComplete: false,
+            activeTool: null,
+        };
+
+        // --- Elementos do DOM ---
+        const tempDisplay = document.getElementById('temp-display');
+        const mercury = document.getElementById('mercury');
+        const successMessage = document.getElementById('success-message');
+        const resetBtn = document.getElementById('btn-reset');
+        
+        const tools = document.querySelectorAll('.tool');
+        const dropZones = document.querySelectorAll('.drop-zone');
+        const pcCase = document.getElementById('pc-case');
+        
+        // Elementos da cena
+        const dustLayer = document.getElementById('dust-layer');
+        const fanBlades = document.getElementById('fan-blades');
+        const coolerScrews = document.getElementById('cooler-screws');
+        const thermalPasteOld = document.getElementById('thermal-paste-old');
+        const thermalPasteNew = document.getElementById('thermal-paste-new');
+        const cableMess = document.getElementById('cable-mess');
+        const dustCanvas = document.getElementById('dust-canvas');
+        const ctx = dustCanvas.getContext('2d');
+
+        let draggedTool = null;
+        let isScrubbing = false;
+        let isDraggingPC = false;
+        let pcStartX = 0;
+        let mouseStartX = 0;
+
+        // --- Mapeamento de Soluções ---
+        const problemSolutions = {
+            dust: { tempDrop: 10, action: () => dustLayer.classList.add('clean') },
+            fan: { tempDrop: 20, action: () => fanBlades.classList.add('spinning') },
+            cooler: { tempDrop: 15, action: () => coolerScrews.classList.add('tight') },
+            paste: { tempDrop: 15, action: () => { thermalPasteOld.classList.add('replaced'); thermalPasteNew.classList.add('applied'); } },
+            airflow: { tempDrop: 5, action: () => cableMess.classList.add('organized') },
+            position: { tempDrop: 8, action: () => { /* Ação é o movimento em si */ } },
+        };
+
+        // --- Funções de Lógica ---
+        function updateUI() {
+            tempDisplay.textContent = `${state.temperature}°C`;
+            const tempPercent = (state.temperature - 30) / 70;
+            mercury.style.height = `${Math.max(5, tempPercent * 100)}%`;
+
+            if (state.temperature > 80) { tempDisplay.className = 'temperature-display temp-high'; mercury.style.backgroundColor = 'var(--danger-color)'; }
+            else if (state.temperature > 50) { tempDisplay.className = 'temperature-display temp-medium'; mercury.style.backgroundColor = 'var(--warning-color)'; }
+            else { tempDisplay.className = 'temperature-display temp-low'; mercury.style.backgroundColor = 'var(--success-color)'; }
+
+            if (state.temperature <= 45 && Object.values(state.problems).every(p => p === false)) { showSuccess(); }
+        }
+
+        function solveProblem(problemKey) {
+            if (state.isComplete || state.problems[problemKey] === false) return;
+            state.problems[problemKey] = false;
+            const solution = problemSolutions[problemKey];
+            state.temperature = Math.max(30, state.temperature - solution.tempDrop);
+            solution.action();
+            updateUI();
+        }
+        
+        function showSuccess() {
+            state.isComplete = true;
+            successMessage.classList.add('show');
+            resetBtn.classList.add('show');
+            deactivateAllTools();
+        }
+
+        function resetSimulation() {
+            state.temperature = 98; state.isComplete = false; state.activeTool = null;
+            for (let key in state.problems) state.problems[key] = true;
+            // Reset Visual
+            dustLayer.classList.remove('clean'); fanBlades.classList.remove('spinning'); coolerScrews.classList.remove('tight');
+            thermalPasteOld.classList.remove('replaced'); thermalPasteNew.classList.remove('applied');
+            cableMess.classList.remove('organized');
+            pcCase.style.transform = 'translateX(-50%)';
+            dropZones.forEach(zone => zone.classList.remove('solved'));
+            tools.forEach(tool => { tool.classList.remove('used', 'active'); if(tool.classList.contains('draggable')) tool.draggable = true; });
+            ctx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+            successMessage.classList.remove('show'); resetBtn.classList.remove('show');
+            updateUI();
+        }
+        
+        function deactivateAllTools() {
+            state.activeTool = null;
+            tools.forEach(tool => tool.classList.remove('active'));
+            dustCanvas.classList.remove('active');
+            pcCase.style.cursor = 'default';
+        }
+
+        // --- Event Listeners (Ferramentas) ---
+        tools.forEach(tool => {
+            tool.addEventListener('click', (e) => {
+                const toolType = tool.dataset.tool;
+                if (tool.classList.contains('used') || state.isComplete) return;
+
+                // Lógica para ferramentas de "clique para ativar"
+                if (!tool.classList.contains('draggable')) {
+                    if (state.activeTool === toolType) { // Se já estava ativo, desativa
+                        deactivateAllTools();
+                    } else {
+                        deactivateAllTools(); // Desativa outras primeiro
+                        state.activeTool = toolType;
+                        tool.classList.add('active');
+                        
+                        if (toolType === 'brush') dustCanvas.classList.add('active');
+                        if (toolType === 'push') pcCase.style.cursor = 'grab';
+                    }
+                } else {
+                    // Lógica para ferramentas de "clique para usar instantaneamente"
+                    const zone = document.querySelector(`.drop-zone[data-tool="${toolType}"]`);
+                    if (zone) {
+                        const problemKey = zone.id.replace('drop-', '');
+                        solveProblem(problemKey);
+                        tool.classList.add('used');
+                        tool.draggable = false;
+                    }
+                }
+            });
+        });
+
+        // --- Interações Específicas ---
+
+        // 1. Vassoura (Esfregar)
+        dustCanvas.addEventListener('mousedown', (e) => { if (state.activeTool === 'brush') isScrubbing = true; });
+        dustCanvas.addEventListener('mouseup', () => { if (isScrubbing) { isScrubbing = false; solveProblem('dust'); document.querySelector('[data-tool="brush"]').classList.add('used'); deactivateAllTools();}});
+        dustCanvas.addEventListener('mouseleave', () => isScrubbing = false);
+        dustCanvas.addEventListener('mousemove', (e) => {
+            if (!isScrubbing) return;
+            const rect = dustCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 15, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        // 2. Mão (Arrastar PC)
+        pcCase.addEventListener('mousedown', (e) => {
+            if (state.activeTool === 'push' && !state.problems.position) return;
+            if (state.activeTool === 'push') {
+                isDraggingPC = true;
+                pcCase.classList.add('dragging');
+                pcStartX = pcCase.offsetLeft;
+                mouseStartX = e.clientX;
+            }
+        });
+        document.addEventListener('mousemove', (e) => {
+            if (!isDraggingPC) return;
+            const dx = e.clientX - mouseStartX;
+            pcCase.style.transform = `translateX(calc(-50% + ${dx}px))`;
+        });
+        document.addEventListener('mouseup', () => {
+            if (!isDraggingPC) return;
+            isDraggingPC = false;
+            pcCase.classList.remove('dragging');
+            const currentTransform = pcCase.style.transform;
+            const match = currentTransform.match(/translateX\(([-\d.]+)px\)/);
+            const translateX = match ? parseFloat(match[1]) : 0;
+            
+            if (translateX > 70) { // Se arrastado o suficiente
+                solveProblem('position');
+                pcCase.style.transform = 'translateX(calc(-50% + 80px))'; // Encaixa na posição final
+                document.querySelector('[data-tool="push"]').classList.add('used');
+                deactivateAllTools();
+            } else {
+                pcCase.style.transform = 'translateX(-50%)'; // Volta à posição original
+            }
+        });
+        
+        // 3. Ferramentas de Arrastar e Largar (Plug, Screwdriver, Paste, Cable-tie)
+        document.querySelectorAll('.tool.draggable').forEach(tool => {
+            tool.addEventListener('dragstart', (e) => { if (!tool.classList.contains('used')) { draggedTool = e.target.dataset.tool; e.target.classList.add('dragging'); }});
+            tool.addEventListener('dragend', (e) => e.target.classList.remove('dragging'));
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => { e.preventDefault(); if (draggedTool && zone.dataset.tool === draggedTool) zone.classList.add('drag-over'); });
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault(); zone.classList.remove('drag-over');
+                if (draggedTool && zone.dataset.tool === draggedTool) {
+                    const problemKey = zone.id.replace('drop-', '');
+                    solveProblem(problemKey);
+                    const usedToolElement = document.querySelector(`.tool[data-tool="${draggedTool}"]`);
+                    usedToolElement.classList.add('used');
+                    usedToolElement.draggable = false;
+                }
+                draggedTool = null;
+            });
+        });
+
+        resetBtn.addEventListener('click', resetSimulation);
+
+        // --- Inicialização ---
+        function init() { updateUI(); }
+        init();
+    </script>
+</body>
+</html>
